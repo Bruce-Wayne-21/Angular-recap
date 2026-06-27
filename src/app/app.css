@@ -2,92 +2,184 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Arial', sans-serif;
-  margin-top: 50px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
+  perspective: 1000px; /* Crucial for 3D effect */
+  padding: 40px;
 }
 
 h1 {
-  margin-bottom: 10px;
-  color: #333;
+  margin-bottom: 5px;
+  color: #e0e6ed;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  font-size: 3em;
+  letter-spacing: 2px;
+  transform: translateZ(50px);
 }
 
 .score {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  margin-bottom: 20px;
-  color: #555;
+  margin-bottom: 30px;
+  color: #4CAF50;
+  text-shadow: 1px 1px 2px #000;
+  background: rgba(0,0,0,0.3);
+  padding: 5px 15px;
+  border-radius: 20px;
+  transform: translateZ(30px);
 }
 
 .board {
   display: grid;
-  background-color: #eee;
-  border: 2px solid #333;
-  width: 400px;
-  height: 400px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #2a3441;
+  border: 4px solid #1c232e;
+  width: 450px;
+  height: 450px;
+  /* 3D Transform */
+  transform: rotateX(25deg) rotateZ(0deg) translateY(-20px);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.6),
+    inset 0 0 20px rgba(0,0,0,0.8);
+  border-radius: 8px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* Add a pseudo-element for the board thickness */
+.board::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -4px;
+  width: calc(100% + 8px);
+  height: 20px;
+  background-color: #0f1319;
+  transform-origin: top;
+  transform: rotateX(-90deg);
+  border-radius: 0 0 8px 8px;
 }
 
 .cell {
   width: 100%;
   height: 100%;
-  border: 1px solid #e0e0e0;
+  border: 1px solid rgba(255,255,255,0.03);
   box-sizing: border-box;
+  transform-style: preserve-3d;
 }
 
 .snake {
-  background-color: #4CAF50;
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
   border-radius: 4px;
+  box-shadow: inset 2px 2px 5px rgba(255,255,255,0.3), inset -2px -2px 5px rgba(0,0,0,0.5);
+  transform: translateZ(8px); /* Lift off the board */
+  position: relative;
 }
 
 .snake-head {
-  background-color: #388E3C;
+  background: linear-gradient(135deg, #66BB6A, #388E3C);
+  transform: translateZ(12px); /* Head slightly higher */
+  border-radius: 6px;
+  z-index: 2;
 }
 
-.food {
-  background-color: #F44336;
+/* Eyes for the snake head */
+.snake-head::before, .snake-head::after {
+  content: '';
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  background: white;
   border-radius: 50%;
+  top: 20%;
+  box-shadow: inset -1px -1px 2px rgba(0,0,0,0.5);
+}
+.snake-head::before { left: 20%; }
+.snake-head::after { right: 20%; }
+
+
+.food {
+  background: radial-gradient(circle at 30% 30%, #ff7b7b, #F44336, #c62828);
+  border-radius: 50%;
+  transform: translateZ(10px);
+  box-shadow:
+    0 10px 15px -3px rgba(244, 67, 54, 0.4),
+    inset -3px -3px 6px rgba(0,0,0,0.4);
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { transform: translateZ(10px) scale(0.9); box-shadow: 0 5px 10px -3px rgba(244, 67, 54, 0.4); }
+  100% { transform: translateZ(15px) scale(1.1); box-shadow: 0 15px 25px -3px rgba(244, 67, 54, 0.6); }
 }
 
 .game-over-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
-  border-radius: 8px;
+  z-index: 100;
+  backdrop-filter: blur(5px);
 }
 
 .game-over-message {
-  background-color: white;
-  padding: 30px;
-  border-radius: 10px;
+  background: linear-gradient(145deg, #2b3643, #1e2530);
+  padding: 40px 60px;
+  border-radius: 15px;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.8),
+    inset 0 1px 1px rgba(255,255,255,0.1);
+  color: #fff;
+  transform: scale(0.8) translateZ(100px);
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+@keyframes popIn {
+  to { transform: scale(1) translateZ(100px); }
 }
 
 .game-over-message h2 {
-  color: #F44336;
+  color: #FF5252;
   margin-top: 0;
+  font-size: 2.5em;
+  text-shadow: 2px 2px 4px #000;
+}
+
+.game-over-message p {
+  font-size: 1.5em;
+  color: #4CAF50;
+  margin: 20px 0;
 }
 
 .game-over-message button {
-  background-color: #4CAF50;
+  background: linear-gradient(145deg, #4CAF50, #388E3C);
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 15px;
-  transition: background-color 0.3s;
+  margin-top: 20px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .game-over-message button:hover {
-  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+  background: linear-gradient(145deg, #4ade80, #22c55e);
+}
+
+.game-over-message button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
