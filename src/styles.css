@@ -1,7 +1,9 @@
 body {
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at center, #2e3b4e 0%, #1a222f 100%);
+  background-color: #f3f4f6; /* light professional background */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #1f2937;
   min-height: 100vh;
   display: flex;
   justify-content: center;
