@@ -5,6 +5,9 @@
   position: relative;
   perspective: 1200px;
   padding: 40px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 h1 {
@@ -66,7 +69,6 @@ h1 {
   height: 100%;
   border: 1px solid rgba(255, 255, 255, 0.02); /* Very subtle grid */
   box-sizing: border-box;
-  transform-style: preserve-3d;
 }
 
 .snake {
@@ -100,7 +102,7 @@ h1 {
 }
 
 .game-over-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
